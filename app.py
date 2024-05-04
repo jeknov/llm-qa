@@ -1,12 +1,29 @@
-from langchain_community.llms import HuggingFaceHub
+import os
+
+from langchain.chains import LLMChain
+from langchain_community.llms import HuggingFaceEndpoint
+from langchain_core.prompts import PromptTemplate
 
 import streamlit as st
 
 
+HUGGINGFACEHUB_API_TOKEN = "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"
+os.environ['HUGGINGFACEHUB_API_TOKEN'] = HUGGINGFACEHUB_API_TOKEN
+
+
 def llm_answer(query):
-    model = 'meta-llama/Meta-Llama-3-8B-Instruct'
-    llm = HuggingFaceHub(repo_id=model)
-    completion = llm(query)
+    template = """Question: {question}
+Answer:"""
+    prompt = PromptTemplate.from_template(template)
+    model = 'mistralai/Mistral-7B-Instruct-v0.2'
+    llm = HuggingFaceEndpoint(
+        repo_id=model,
+        max_length=128,
+        temperature=0.5,
+        max_new_tokens=200,
+    )
+    llm_chain = LLMChain(prompt=prompt, llm=llm)
+    completion = llm_chain.run(query)
     return completion
 
 
