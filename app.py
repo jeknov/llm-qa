@@ -1,14 +1,8 @@
-import os
-
 from langchain.chains import LLMChain
 from langchain_community.llms import HuggingFaceEndpoint
 from langchain_core.prompts import PromptTemplate
 
 import streamlit as st
-
-
-HUGGINGFACEHUB_API_TOKEN = "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"
-os.environ['HUGGINGFACEHUB_API_TOKEN'] = HUGGINGFACEHUB_API_TOKEN
 
 
 def llm_answer(query):
